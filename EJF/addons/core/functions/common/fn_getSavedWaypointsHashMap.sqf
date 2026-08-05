@@ -1,0 +1,1 @@
+missionNamespace getVariable ["EJF_savedDroneWaypoints", createHashMap];
