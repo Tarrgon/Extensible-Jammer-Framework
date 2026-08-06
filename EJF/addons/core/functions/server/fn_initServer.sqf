@@ -74,8 +74,6 @@ publicVariable "EJF_jammerHashMap";
 
 private _ddtLoaded = (getLoadedModsInfo findIf { (_x # 0) isEqualTo "@Drongos Drone Tweaks"; }) != -1;
 
-INFO_1("DDT LOADED: %1", _ddtLoaded);
-
 if (_ddtLoaded) then {
 	while { isNil "DDT_fnc_DeployUAV"; } do { sleep 1; };
 

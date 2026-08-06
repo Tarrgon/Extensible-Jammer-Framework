@@ -25,6 +25,21 @@ private _previouslyInDrone = false;
 	};
 }, true] call CBA_fnc_addPlayerEventHandler;
 
+if (!isServer) then {
+	private _ddtLoaded = (getLoadedModsInfo findIf { (_x # 0) isEqualTo "@Drongos Drone Tweaks"; }) != -1;
+
+	if (_ddtLoaded) then {
+		while { isNil "DDT_fnc_DeployUAV"; } do { sleep 1; };
+
+		INFO("Compiling all DDT scripts...");
+
+		DDT_fnc_DeployUAV = compile preprocessFile QPATHTOFOLDER(functions\ddt\fn_deployUav.sqf);
+		DDT_fnc_GuideToTargetBomber = compile preprocessFile QPATHTOFOLDER(functions\ddt\fn_guideToTargetBomber.sqf);
+		DDT_fnc_GuideToTarget = compile preprocessFile QPATHTOFOLDER(functions\ddt\fn_guideToTarget.sqf);
+		DDT_fnc_DRAGuideDrone = compile preprocessFile QPATHTOFOLDER(functions\ddt\fn_draGuide.sqf);
+	};
+};
+
 while {true} do {
 	private _drone = getConnectedUAV player;
 	private _inDrone = !(isNull _drone || {cameraOn != _drone});
