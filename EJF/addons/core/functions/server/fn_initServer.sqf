@@ -84,3 +84,5 @@ if (_ddtLoaded) then {
 	DDT_fnc_GuideToTarget = compile preprocessFile QPATHTOFOLDER(functions\ddt\fn_guideToTarget.sqf);
 	DDT_fnc_DRAGuideDrone = compile preprocessFile QPATHTOFOLDER(functions\ddt\fn_draGuide.sqf);
 };
+
+EJF_ready = true;
