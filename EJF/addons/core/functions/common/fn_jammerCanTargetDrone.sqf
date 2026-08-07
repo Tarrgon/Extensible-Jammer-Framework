@@ -39,6 +39,10 @@ if (_jammerSide isEqualTo sideUnknown) exitWith {
 	true;
 };
 
+if (_jammerSide isEqualTo Civilian) exitWith {
+	false;
+};
+
 private _isEnemy = if (_jammerSide isEqualTo Civilian) then { false } else { (_droneSide getFriend _jammerSide) < 0.6 };
 
 // The disabling of allied drones in smart mode is handled by
