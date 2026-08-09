@@ -5,7 +5,7 @@ if (!hasInterface) exitWith { false; };
 params [["_idOrJammer", -1, [0, createHashMap]]];
 
 if (_idOrJammer isEqualTo -1) exitWith {
-	ERROR("Attempted to call getJammerSide without an id or jammer.");
+	ERROR("Attempted to call iOwnJammer without an id or jammer.");
 	false;
 };
 

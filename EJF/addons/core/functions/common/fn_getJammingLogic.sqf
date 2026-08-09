@@ -10,7 +10,7 @@ if (_idOrJammer isEqualTo -1) exitWith {
 private _jammerData = _idOrJammer call EJF_fnc_getJammerData;
 
 if (_jammerData isEqualTo objNull) exitWith {
-	ERROR_1("getJammerSide called with a non-existent ID: %1.", _idOrJammer);
+	ERROR_1("getJammingLogic called with a non-existent ID: %1.", _idOrJammer);
 	false;
 };
 

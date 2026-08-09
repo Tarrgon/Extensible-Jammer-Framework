@@ -3,14 +3,14 @@
 params [["_idOrJammer", -1, [0, createHashMap]]];
 
 if (_idOrJammer isEqualTo -1) exitWith {
-	ERROR("Attempted to call getJammerPosition without an id or jammer.");
+	ERROR("Attempted to call getJammerOwner without an id or jammer.");
 	objNull;
 };
 
 private _jammerData = _idOrJammer call EJF_fnc_getJammerData;
 
 if (_jammerData isEqualTo objNull) exitWith {
-	ERROR_1("getJammerPosition called with a non-existent ID: %1.", _idOrJammer);
+	ERROR_1("getJammerOwner called with a non-existent ID: %1.", _idOrJammer);
 	objNull;
 };
 
