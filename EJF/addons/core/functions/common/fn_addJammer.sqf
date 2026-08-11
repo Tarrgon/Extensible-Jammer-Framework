@@ -31,13 +31,11 @@ private _id = call EJF_fnc_generateId;
 private _isStaticLocation = _jammer isEqualType [];
 
 private _isSoldier = if (_isStaticLocation) then { false; } else { _jammer isKindOf "CAManBase"; };
-private _jammerOwner = if (!_isStaticLocation && _isSoldier) then { netId _jammer; } else {
-	if (_jammerOwnerTemp isEqualTo objNull) exitWith {
-		"";
-	};
+private _jammerOwner = if (_jammerOwnerTemp isNotEqualTo objNull) then { netId _jammerOwnerTemp; } else {
+	if (!_isStaticLocation && _isSoldier) exitWith { netId _jammer; };
 
-	netId _jammerOwnerTemp;
-};
+	"";
+}; 
 
 private _jammerData = createHashMap;
 _jammerData set ["id", _id];
