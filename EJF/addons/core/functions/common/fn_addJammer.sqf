@@ -1,6 +1,6 @@
 #include "..\..\script_component.hpp"
 
-params [["_jammer", objNull, [[], objNull]], ["_innerRange", -1, [0]], ["_outerRange", -1, [0]], ["_detectionRange", -1, [0]], ["_enabled", true, [true]], ["_jammerOwnerTemp", objNull, [objNull]], ["_side", 0, [sideUnknown, 0]], ["_jammingLogicPlayer", -1, [0]], ["_jammingLogicAI", -1, [0]], ["_jammingLogicStatic", -1, [0]], ["_hasCustomAction", [], [[]]]];
+params [["_jammer", objNull, [[], objNull]], ["_innerRange", 0, [0]], ["_outerRange", 0, [0]], ["_detectionRange", 0, [0]], ["_enabled", true, [true]], ["_jammerOwnerTemp", objNull, [objNull]], ["_side", 0, [sideUnknown, 0]], ["_jammingLogicPlayer", -1, [0]], ["_jammingLogicAI", -1, [0]], ["_jammingLogicStatic", -1, [0]], ["_hasCustomAction", [], [[]]]];
 
 if (!isServer) exitWith {
 	[_jammer, _innerRange, _outerRange, _detectionRange, _enabled, _jammerOwnerTemp, _side, _jammingLogicPlayer, _jammingLogicAI, _jammingLogicStatic, _hasCustomAction] remoteExecCall ["EJF_fnc_addJammer", 2];
