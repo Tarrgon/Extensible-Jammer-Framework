@@ -11,5 +11,5 @@ addMissionEventHandler ["EntityDeleted", {
 
 	{
 		_x call EJF_removeJammer;
-	} forEach _jammerIds
+	} forEach _jammerIds;
 }];

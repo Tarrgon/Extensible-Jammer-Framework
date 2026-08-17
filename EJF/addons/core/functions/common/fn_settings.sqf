@@ -43,9 +43,22 @@ private _category = "Extensible Jammer Framework";
 ] call CBA_fnc_addSetting;
 
 [
+	"ejf_default_jammer_logic_vehicle",
+	"LIST",
+	["Default Jammer Logic Vehicle", "For jammers that don't define custom logic, the default jamming logic to use (for vehicles)."],
+	_category,
+	[
+		[0, 1, 2],
+		["Smart", "All", "Enemy Only"],
+		0
+	],
+	1
+] call CBA_fnc_addSetting;
+
+[
 	"ejf_default_jammer_logic_static",
 	"LIST",
-	["Default Jammer Logic Player", "For jammers that don't define custom logic, the default jamming logic to use (for statically positioned jammers)."],
+	["Default Jammer Logic Static", "For jammers that don't define custom logic, the default jamming logic to use (for statically positioned jammers)."],
 	_category,
 	[
 		[0, 1, 2],

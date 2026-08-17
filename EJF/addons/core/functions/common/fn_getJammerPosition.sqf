@@ -15,7 +15,7 @@ if (_jammerData isEqualTo objNull) exitWith {
 };
 
 private _jammer = _jammerData get "jammer";
-private _isStaticLocation = _jammerData get "isStaticLocation";
+private _isStaticLocation = (_jammerData get "type") == 1;
 
 private _position = 0;
 

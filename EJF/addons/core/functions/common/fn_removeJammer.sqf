@@ -17,13 +17,6 @@ if (!(_id in EJF_jammerHashMap)) exitWith {
 _id call EJF_fnc_enableAllUavsInRange;
 
 private _jammerData = EJF_jammerHashMap get _id;
-private _isStaticLocation = _jammerData get "isStaticLocation";
-
-// if (!_isStaticLocation) then {
-// 	private _jammer = _jammerData get "jammer";
-// 	private _deletedEventHandlerId = _jammerData get "deletedEventHandlerId";
-// 	_jammer removeEventHandler ["Deleted", _deletedEventHandlerId];
-// };
 
 _jammerData call EJF_fnc_removeJammedDrones;
 

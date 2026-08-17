@@ -1,6 +1,6 @@
 #include "..\..\script_component.hpp"
 
-params [["_jammer", objNull, [[], objNull]], ["_innerRange", 0, [0]], ["_outerRange", 0, [0]], ["_detectionRange", 0, [0]], ["_enabled", true, [true]], ["_jammerOwnerTemp", objNull, [objNull]], ["_side", 0, [sideUnknown, 0]], ["_jammingLogicPlayer", -1, [0]], ["_jammingLogicAI", -1, [0]], ["_jammingLogicStatic", -1, [0]], ["_hasCustomAction", [], [[]]]];
+params [["_jammer", objNull, [[], objNull]], ["_innerRange", 0, [0]], ["_outerRange", 0, [0]], ["_detectionRange", 0, [0]], ["_enabled", true, [true]], ["_jammerOwnerTemp", objNull, [objNull]], ["_side", 0, [sideUnknown, 0]], ["_jammingLogic", [-1, -1, -1, -1], [[]]], ["_hasCustomAction", [], [[]]]];
 
 if (!isServer) exitWith {
 	[_jammer, _innerRange, _outerRange, _detectionRange, _enabled, _jammerOwnerTemp, _side, _jammingLogicPlayer, _jammingLogicAI, _jammingLogicStatic, _hasCustomAction] remoteExecCall ["EJF_fnc_addJammer", 2];
@@ -28,14 +28,34 @@ if (_innerRange > _outerRange) exitWith {
 };
 
 private _id = call EJF_fnc_generateId;
-private _isStaticLocation = _jammer isEqualType [];
+private _jammerType = switch (true) do {
+	case (_jammer isKindOf "CAManBase"): { 0 };
 
-private _isSoldier = if (_isStaticLocation) then { false; } else { _jammer isKindOf "CAManBase"; };
+	case (_jammer isEqualType []): { 1 };
+
+	case (_jammer isKindOf "AllVehicles"): { 2 };
+
+	default { -1 };
+};
+
+private _isSoldier = _jammerType == 0;
+private _isStaticLocation = _jammerType == 1;
+private _isVehicle = _jammerType == 2;
+
 private _jammerOwner = if (_jammerOwnerTemp isNotEqualTo objNull) then { netId _jammerOwnerTemp; } else {
-	if (!_isStaticLocation && _isSoldier) exitWith { netId _jammer; };
+	if (_isSoldier) exitWith { netId _jammer; };
+
+	// Vehicles are intentionally handled on-the-fly with getJammerOwner
+	// if (_isVehicle) exitWith {
+	// 	private _owner = _jammer call EJF_fnc_getVehicleOwner;
+
+	// 	if (_owner isNotEqualTo objNull) exitWith { netId _owner; };
+
+	// 	"";
+	// };
 
 	"";
-}; 
+};
 
 private _jammerData = createHashMap;
 _jammerData set ["id", _id];
@@ -45,13 +65,18 @@ _jammerData set ["jammerOwner", _jammerOwner];
 _jammerData set ["innerRangeSqr", _innerRange * _innerRange];
 _jammerData set ["outerRangeSqr", _outerRange * _outerRange];
 _jammerData set ["detectionRangeSqr", _detectionRange * _detectionRange];
-_jammerData set ["isStaticLocation", _isStaticLocation];
+_jammerData set ["type", _jammerType];
 _jammerData set ["side", _side];
-_jammerData set ["jammingLogicAI", _jammingLogicAI];
-_jammerData set ["jammingLogicPlayer", _jammingLogicPlayer];
-_jammerData set ["jammingLogicStatic", _jammingLogicStatic];
+_jammerData set ["jammingLogicPlayer", _jammingLogic # 0];
+_jammerData set ["jammingLogicAI", _jammingLogic # 1];
+_jammerData set ["jammingLogicVehicle", _jammingLogic # 2];
+_jammerData set ["jammingLogicStatic", _jammingLogic # 3];
 _jammerData set ["hasCustomAction", _hasCustomAction];
 _jammerData set ["_forceUpdate", false];
+
+if (_isVehicle) then {
+	_jammerData set ["vehiclePreviousOwner", _jammerOwner];
+};
 
 EJF_jammerHashMap set [_id, _jammerData];
 EJF_jammerHashMapDirty = true;

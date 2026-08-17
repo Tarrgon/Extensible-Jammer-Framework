@@ -16,14 +16,29 @@ if (_jammerData isEqualTo objNull) exitWith {
 
 private _jammer = _jammerData get "jammer";
 private _owner = _jammerData get "jammerOwner";
+private _jammerType = _jammerData get "type";
 
-private _unit = if (!(_owner isEqualTo "")) then { objectFromNetId _owner; } else {
-	private _isStaticLocation = _jammerData get "isStaticLocation";
+private _unit = if (_owner isNotEqualTo "") then { objectFromNetId _owner; } else {
+	private _isStaticLocation = _jammerType == 1;
 	if (_isStaticLocation) exitWith { objNull; };
 
-	private _jammerIsSoldier = _jammer isKindOf "CAManBase";
+	private _isSoldier = _jammerType == 0;
 
-	if (_jammerIsSoldier) exitWith { _jammer; };
+	if (_isSoldier) exitWith { _jammer; };
+
+	private _isVehicle = _jammerType == 2;
+
+	if (_isVehicle) exitWith {
+		private _owner = _jammer call EJF_fnc_getVehicleOwner;
+
+		if (_owner isNotEqualTo objNull) exitWith { _owner };
+
+		_owner = _jammerData get "vehiclePreviousOwner";
+
+		if (isNil "_owner" || { _owner isEqualTo "" }) exitWith { "" };
+
+		objectFromNetId _owner; 
+	};
 
 	objNull;
 };

@@ -5,6 +5,12 @@ if (!isServer) exitWith {};
 EJF_ID = 0;
 
 /*
+	JammerType is one of the following:
+	- -1 - Unknown
+	- 0 - Soldier
+	- 1 - Static location
+	- 2 - Vehicle
+
 	JammingLogicNumber is one of the following:
 	- -1 - Use mission setting default.
 	- 0 - Smart - Jammer will disable all allied drones in inner range only when an enemy drone enters the inner range (acts as if the jammer is disabled for allies until an enemy drone is in inner range).
@@ -27,7 +33,7 @@ EJF_ID = 0;
 	- innerRangeSqr - Number
 	- outerRangeSqr - Number
 	- detectionRangeSqr - Number
-	- isStaticLocation - Boolean - true when Jammer is an Array
+	- jammerType - JammerType
 	- side - Side or 0 - Side override of the jammer, use EJF_fnc_getJammerSide to properly resolve the side of the jammer. When 0, gets the side of the unit returned with EJF_fnc_getJammerOwner. Returns sideUnknown if no owner and no override (targets all drones).
 	- jammingLogicAI - JammingLogicNumber - When the jammer unit is not a player, the jamming logic to use.
 	- jammingLogicPlayer - JammingLogicNumber - When the jammer unit is a player, the jamming logic to use.

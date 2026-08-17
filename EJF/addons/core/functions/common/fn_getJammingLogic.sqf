@@ -21,11 +21,21 @@ if (_jammerData isEqualTo objNull) exitWith {
 	2 - Enemy only
 */
 
-private _isStaticLocation = _jammerData get "isStaticLocation";
+private _isStaticLocation = (_jammerData get "type") == 1;
 if (_isStaticLocation) exitWith {
 	private _jammingLogic = _jammerData get "jammingLogicStatic";
 	if (_jammingLogic == -1) then {
 		_jammingLogic = missionNamespace getVariable ["ejf_default_jammer_logic_static", true];
+	};
+
+	_jammingLogic;
+};
+
+private _isVehicle = (_jammerData get "type") == 2;
+if (_isVehicle) exitWith {
+	private _jammingLogic = _jammerData get "jammingLogicVehicle";
+	if (_jammingLogic == -1) then {
+		_jammingLogic = missionNamespace getVariable ["ejf_default_jammer_logic_vehicle", true];
 	};
 
 	_jammingLogic;

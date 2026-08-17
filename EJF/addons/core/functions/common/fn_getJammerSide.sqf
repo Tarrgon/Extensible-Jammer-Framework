@@ -23,6 +23,11 @@ if (!(_sideOverride isEqualTo 0)) exitWith {
 private _jammerOwner = _idOrJammer call EJF_fnc_getJammerOwner;
 
 if (_jammerOwner isEqualTo objNull) exitWith {
+	// Last resort, get vehicle side
+	if ((_jammerData get "type") == 2) exitWith {
+		side (_jammerData get "jammer");
+	};
+
 	sideUnknown;
 };
 

@@ -24,12 +24,15 @@ class CfgFunctions {
 			class getJammerSide {};
 			class getJammingLogic {};
 			class getSavedWaypointsHashMap {};
+			class getVehicleOwner {};
+			class initCommonEventHandlers {};
 			class jammerCanTargetDrone {};
 			class removeJammedDrones {};
 			class removeJammer {};
 			class setJammerEnabled {};
 			class setJammerLogic {};
 			class setJammerOwner {};
+			class setJammerPreviousOwner {};
 			class setJammerRanges {};
 			class setJammerSide {};
 

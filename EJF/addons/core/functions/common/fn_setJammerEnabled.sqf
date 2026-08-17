@@ -1,6 +1,6 @@
 #include "..\..\script_component.hpp"
 
-params [["_idOrJammer", -1, [0, createHashMap]], ["_enabled", true, [true]]];
+params [["_idOrJammer", -1, [0, createHashMap]], ["_enabled", true, [true]], ["_disableReason", "", [""]]];
 
 if (!isServer) exitWith {
 	if (!(_idOrJammer isEqualType 0)) exitWith {
@@ -24,6 +24,7 @@ if (_jammerData isEqualTo objNull) exitWith {
 };
 
 _jammerData set ["enabled", _enabled];
+_jammerData set ["disableReason", _disableReason];
 
 if (_enabled) then {
 	_jammerData set ["_forceUpdate", true];
