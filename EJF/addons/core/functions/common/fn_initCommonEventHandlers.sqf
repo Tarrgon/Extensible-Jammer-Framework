@@ -1,13 +1,19 @@
-private _handle = {
+#include "..\..\script_component.hpp"
+
+INFO("Initializing common event handlers...");
+
+EJF_fnc_handleVehicleOwnerChange = {
 	params ["_vehicle"];
 
 	if (local _vehicle) then {
 		private _jammerIds = _vehicle getVariable ["EJF_jammerIds", []];
 		private _vehicleOwner = _vehicle call EJF_fnc_getVehicleOwner;
 
+		if (isNull _vehicleOwner) exitWith {};
+
 		{
 			private _jammerData = _x call EJF_fnc_getJammerData;
-			private _previousOwnerNetId = _jammerData get ["vehiclePreviousOwner", ""];
+			private _previousOwnerNetId = _jammerData getOrDefault ["vehiclePreviousOwner", ""];
 			if (_previousOwnerNetId isEqualTo "") exitWith {
 				[_jammerData get "id", netId _vehicleOwner] call EJF_fnc_setJammerPreviousOwner;
 			};
@@ -21,12 +27,18 @@ private _handle = {
 	};
 };
 
-["AllVehicles", "SeatSwitched", {
-    params ["_vehicle"];
-	_vehicle call _handle;
+["AllVehicles", "InitPost", {
+	params ["_vehicle"];
+	_vehicle call EJF_fnc_handleVehicleOwnerChange;
 }, true, [], true] call CBA_fnc_addClassEventHandler;
 
-["AllVehicles", "GetIn", {
+["CAManBase", "SeatSwitchedMan", {
     params ["_vehicle"];
-    _vehicle call _handle;
+	private _vehicle = param [2];
+	_vehicle call EJF_fnc_handleVehicleOwnerChange;
+}, true, [], true] call CBA_fnc_addClassEventHandler;
+
+["CAManBase", "GetInMan", {
+    private _vehicle = param [2];
+    _vehicle call EJF_fnc_handleVehicleOwnerChange;
 }, true, [], true] call CBA_fnc_addClassEventHandler;

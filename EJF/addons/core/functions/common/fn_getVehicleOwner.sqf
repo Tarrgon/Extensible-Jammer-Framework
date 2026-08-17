@@ -8,7 +8,7 @@ if (!(_driver isEqualTo objNull) && { isPlayer _driver && alive _driver }) then 
   _owner = _driver;
 };
 
-if (_owner isEqualTo objNull) then {
+if (_owner isEqualTo objNull) exitWith {
   private _units = crew _vehicle;
 
   private _playerUnits = _units select { isPlayer _x && alive _x };
@@ -20,7 +20,11 @@ if (_owner isEqualTo objNull) then {
     _newOwner = _aiUnits param [0];
   };
 
-  _owner = [_newOwner, objNull] select isNil "_newOwner";
+  if (isNil "_newOwner") exitWith {
+    objNull;
+  };
+
+  _newOwner;
 };
 
 _owner;

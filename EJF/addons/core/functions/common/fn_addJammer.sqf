@@ -75,7 +75,12 @@ _jammerData set ["hasCustomAction", _hasCustomAction];
 _jammerData set ["_forceUpdate", false];
 
 if (_isVehicle) then {
-	_jammerData set ["vehiclePreviousOwner", _jammerOwner];
+	private _owner = _jammer call EJF_fnc_getVehicleOwner;
+	if (!isNull _owner) then {
+		_jammerData set ["vehiclePreviousOwner", netId _owner];
+	} else {
+		_jammerData set ["vehiclePreviousOwner", ""];
+	};
 };
 
 EJF_jammerHashMap set [_id, _jammerData];
