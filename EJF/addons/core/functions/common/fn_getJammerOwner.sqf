@@ -35,7 +35,7 @@ private _unit = if (_owner isNotEqualTo "") then { objectFromNetId _owner; } els
 
 		_owner = _jammerData get "vehiclePreviousOwner";
 
-		if (isNil "_owner" || { _owner isEqualTo "" }) exitWith { "" };
+		if (isNil "_owner" || { _owner isEqualTo "" }) exitWith { objNull };
 
 		objectFromNetId _owner; 
 	};

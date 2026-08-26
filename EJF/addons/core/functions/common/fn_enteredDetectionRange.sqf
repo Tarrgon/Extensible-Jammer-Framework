@@ -12,7 +12,7 @@ if (isDedicated) exitWith {
 	};
 };
 
-// Single player
+// Single player prevents checking jammerCanTargetDrone again unnecessarily
 private _canTarget = true;
 
 if (isServer && hasInterface) then {
