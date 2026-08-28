@@ -8,6 +8,10 @@ params [["_allUavs", [], [[]]], ["_allEnabledJammers", [], [[]]]];
 	private _uav = _x;
 	private _uavNetId = netId _uav;
 	private _posUav = getPosWorld _uav;
+	private _uavCurrentSide = side _uav;
+	private _uavPreviousSide = _uav getVariable ["EJF_lastSide", _uavCurrentSide];
+	
+	_uav setVariable ["EJF_lastSide", _uavCurrentSide];
 
 	{
 		private _jammer = _x;
@@ -23,7 +27,7 @@ params [["_allUavs", [], [[]]], ["_allEnabledJammers", [], [[]]]];
 		private _previousSide = EJF_jammerPreviousSides getOrDefault [_jammerId, _currentSide];
 
 		private _previousDistances = EJF_jammerPreviousDistances get _jammerId;
-		private _previousDistance = if (_forceUpdate || !(_previousSide isEqualTo _currentSide)) then { 99999999; } else { _previousDistances getOrDefault [_uavNetId, 99999999]; };
+		private _previousDistance = if (_forceUpdate || _previousSide isNotEqualTo _currentSide || _uavCurrentSide isNotEqualTo _uavPreviousSide) then { 99999999; } else { _previousDistances getOrDefault [_uavNetId, 99999999]; };
 
 		private _posJammer = _jammer call EJF_fnc_getJammerPosition;
 		
@@ -62,5 +66,4 @@ params [["_allUavs", [], [[]]], ["_allEnabledJammers", [], [[]]]];
 		_previousDistances set [_uavNetId, _dist];
 		EJF_jammerPreviousSides set [_jammerId, _currentSide];
 	} forEach _allEnabledJammers;
-
 } forEach _allUavs;
