@@ -41,6 +41,8 @@ if (isServer && hasInterface) then {
 
 	if (_canTarget) then {
 		call _fnc_serverLogic;
+
+		[_uav, _jammer, _dist] remoteExec ["EJF_fnc_exitedOuterRange", -clientOwner];
 	};
 };
 

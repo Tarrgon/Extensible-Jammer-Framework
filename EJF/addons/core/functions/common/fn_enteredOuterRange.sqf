@@ -28,11 +28,15 @@ private _canTarget = true;
 if (isServer && hasInterface) then {
 	_canTarget = [_jammer, _uav] call EJF_fnc_jammerCanTargetDrone;
 
-	if (_canTarget && !_hasCustomAction) then {
-		if (!(_uavNetId in EJF_uavsInOuterRanges)) then {
-			EJF_uavsInOuterRanges set [_uavNetId, [(_jammer get "id")]];
-		} else {
-			(EJF_uavsInOuterRanges get _uavNetId) pushBack (_jammer get "id");
+	if (_canTarget) then {
+		[_uav, _jammer, _dist] remoteExec ["EJF_fnc_enteredOuterRange", -clientOwner];
+
+		if (!_hasCustomAction) then {
+			if (!(_uavNetId in EJF_uavsInOuterRanges)) then {
+				EJF_uavsInOuterRanges set [_uavNetId, [(_jammer get "id")]];
+			} else {
+				(EJF_uavsInOuterRanges get _uavNetId) pushBack (_jammer get "id");
+			};
 		};
 	};
 };
