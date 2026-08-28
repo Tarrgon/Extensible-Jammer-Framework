@@ -35,7 +35,7 @@ params [["_allUavs", [], [[]]], ["_allEnabledJammers", [], [[]]]];
 				[_uav, _jammer, _dist, true, true] call EJF_fnc_exitedOuterRange;
 			};
 			
-			if (_dist <= _innerRange) then {
+			if (_dist <= _innerRange) then { // Theoretically causes a problem with smart jamming in a very rare case.
 				[_uav, _jammer, _dist, true, true] call EJF_fnc_exitedInnerRange;
 			};
 		} else {
