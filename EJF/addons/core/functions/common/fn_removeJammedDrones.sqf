@@ -1,6 +1,6 @@
 #include "..\..\script_component.hpp"
 
-params [["_idOrJammer", -1, [0, createHashMap]], ["_drone", objNull, [objNull]]];
+params [["_idOrJammer", -1, [0, createHashMap]]];
 
 if (_idOrJammer isEqualTo -1) exitWith {
 	ERROR("Attempted to call removeJammedDrones without an id or jammer.");

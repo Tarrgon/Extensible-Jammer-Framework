@@ -10,7 +10,7 @@ params [["_allUavs", [], [[]]], ["_allEnabledJammers", [], [[]]]];
 	private _posUav = getPosWorld _uav;
 	private _uavCurrentSide = side _uav;
 	private _uavPreviousSide = _uav getVariable ["EJF_lastSide", _uavCurrentSide];
-	
+
 	_uav setVariable ["EJF_lastSide", _uavCurrentSide];
 
 	{
@@ -26,36 +26,50 @@ params [["_allUavs", [], [[]]], ["_allEnabledJammers", [], [[]]]];
 		private _currentSide = _jammer call EJF_fnc_getJammerSide;
 		private _previousSide = EJF_jammerPreviousSides getOrDefault [_jammerId, _currentSide];
 
-		private _previousDistances = EJF_jammerPreviousDistances get _jammerId;
-		private _previousDistance = if (_forceUpdate || _previousSide isNotEqualTo _currentSide || _uavCurrentSide isNotEqualTo _uavPreviousSide) then { 99999999; } else { _previousDistances getOrDefault [_uavNetId, 99999999]; };
-
-		private _posJammer = _jammer call EJF_fnc_getJammerPosition;
-		
-		private _dist = _posJammer distanceSqr _posUav;
-
-		switch (true) do {
-			case (_previousDistance > _innerRange && _dist <= _innerRange): {
-				[_uav, _jammer, _dist] call EJF_fnc_enteredInnerRange;
+		if (_uavCurrentSide isNotEqualTo _uavPreviousSide && { !([_jammer, _uav] call EJF_fnc_jammerCanTargetDrone) }) then {
+			if (_dist <= _detectionRange) then {
+				[_uav, _jammer, _dist, true, true] call EJF_fnc_exitedDetectionRange;
 			};
 
-			case (_previousDistance > _outerRange && _dist <= _outerRange): {
-				[_uav, _jammer, _dist] call EJF_fnc_enteredOuterRange;
+			if (_dist <= _outerRange) then {
+				[_uav, _jammer, _dist, true, true] call EJF_fnc_exitedOuterRange;
 			};
-
-			case (_previousDistance > _detectionRange && _dist <= _detectionRange): {
-				[_uav, _jammer, _dist] call EJF_fnc_enteredDetectionRange;
+			
+			if (_dist <= _innerRange) then {
+				[_uav, _jammer, _dist, true, true] call EJF_fnc_exitedInnerRange;
 			};
+		} else {
+			private _previousDistances = EJF_jammerPreviousDistances get _jammerId;
+			private _previousDistance = if (_forceUpdate || _previousSide isNotEqualTo _currentSide || _uavCurrentSide isNotEqualTo _uavPreviousSide) then { 99999999; } else { _previousDistances getOrDefault [_uavNetId, 99999999]; };
 
-			case (_previousDistance <= _detectionRange && _dist > _detectionRange): {
-				[_uav, _jammer, _dist] call EJF_fnc_exitedDetectionRange;
-			};
+			private _posJammer = _jammer call EJF_fnc_getJammerPosition;
+			
+			private _dist = _posJammer distanceSqr _posUav;
 
-			case (_previousDistance <= _outerRange && _dist > _outerRange): {
-				[_uav, _jammer, _dist] call EJF_fnc_exitedOuterRange;
-			};
+			switch (true) do {
+				case (_previousDistance > _innerRange && _dist <= _innerRange): {
+					[_uav, _jammer, _dist] call EJF_fnc_enteredInnerRange;
+				};
 
-			case (_previousDistance <= _innerRange && _dist > _innerRange): {
-				[_uav, _jammer, _dist] call EJF_fnc_exitedInnerRange;
+				case (_previousDistance > _outerRange && _dist <= _outerRange): {
+					[_uav, _jammer, _dist] call EJF_fnc_enteredOuterRange;
+				};
+
+				case (_previousDistance > _detectionRange && _dist <= _detectionRange): {
+					[_uav, _jammer, _dist] call EJF_fnc_enteredDetectionRange;
+				};
+
+				case (_previousDistance <= _detectionRange && _dist > _detectionRange): {
+					[_uav, _jammer, _dist] call EJF_fnc_exitedDetectionRange;
+				};
+
+				case (_previousDistance <= _outerRange && _dist > _outerRange): {
+					[_uav, _jammer, _dist] call EJF_fnc_exitedOuterRange;
+				};
+
+				case (_previousDistance <= _innerRange && _dist > _innerRange): {
+					[_uav, _jammer, _dist] call EJF_fnc_exitedInnerRange;
+				};
 			};
 		};
 

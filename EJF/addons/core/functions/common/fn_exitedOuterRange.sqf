@@ -1,6 +1,6 @@
 #include "..\..\script_component.hpp"
 
-params ["_uav", "_jammer", "_dist", ["_disabled", false]];
+params ["_uav", "_jammer", "_dist", ["_disabled", false], ["_force", false]];
 
 private _hasCustomAction = 4 in (_jammer get "hasCustomAction");
 
@@ -24,11 +24,11 @@ private _fnc_serverLogic = {
 };
 
 if (isDedicated) exitWith {
-	private _canTarget = [_jammer, _uav] call EJF_fnc_jammerCanTargetDrone;
+	private _canTarget = _force || { [_jammer, _uav] call EJF_fnc_jammerCanTargetDrone };
 	if (_canTarget) then {
 		call _fnc_serverLogic;
 
-		[_uav, _jammer, _dist] remoteExec ["EJF_fnc_exitedOuterRange", -2];
+		[_uav, _jammer, _dist, _disabled, _force] remoteExec ["EJF_fnc_exitedOuterRange", -2];
 		["EJF_server_UavExitedOuterRange", [_uav, _jammer, _dist]] call CBA_fnc_serverEvent;
 	};
 };
@@ -37,12 +37,12 @@ if (isDedicated) exitWith {
 private _canTarget = true;
 
 if (isServer && hasInterface) then {
-	_canTarget = [_jammer, _uav] call EJF_fnc_jammerCanTargetDrone;
+	_canTarget = _force || { [_jammer, _uav] call EJF_fnc_jammerCanTargetDrone };
 
 	if (_canTarget) then {
 		call _fnc_serverLogic;
 
-		[_uav, _jammer, _dist] remoteExec ["EJF_fnc_exitedOuterRange", -clientOwner];
+		[_uav, _jammer, _dist, _disabled, _force] remoteExec ["EJF_fnc_exitedOuterRange", -clientOwner];
 	};
 };
 
