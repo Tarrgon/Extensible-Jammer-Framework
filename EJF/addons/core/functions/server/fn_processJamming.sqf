@@ -39,7 +39,16 @@ params [["_allUavs", [], [[]]], ["_allEnabledJammers", [], [[]]]];
 				[_uav, _jammer, _dist, true, true] call EJF_fnc_exitedInnerRange;
 			};
 		} else {
-			private _previousDistances = EJF_jammerPreviousDistances get _jammerId;
+			private _previousDistances = EJF_jammerPreviousDistances getOrDefault [_jammerId, -1];
+
+			// Not sure how this would happen as they are deleted when they only deleted from here when they are removed as a jammer
+			// It shouldn't be possible for a jammer to both be enabled and not be in this hash map. However, this should prevent errors.
+			if (_previousDistances isEqualTo -1) then {
+				EJF_jammerHashMap deleteAt _id;
+				EJF_jammerPreviousSides deleteAt _id;
+				continue;
+			};
+
 			private _previousDistance = if (_forceUpdate || _previousSide isNotEqualTo _currentSide || _uavCurrentSide isNotEqualTo _uavPreviousSide) then { 99999999; } else { _previousDistances getOrDefault [_uavNetId, 99999999]; };
 
 			private _posJammer = _jammer call EJF_fnc_getJammerPosition;
