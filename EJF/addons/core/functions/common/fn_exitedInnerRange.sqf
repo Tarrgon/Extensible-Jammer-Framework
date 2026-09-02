@@ -60,7 +60,7 @@ if (isServer && hasInterface) then {
 	_canTarget = _force || { [_jammer, _uav] call EJF_fnc_jammerCanTargetDrone };
 
 	if (_canTarget) then {
-		[_uav, _jammer, _dist, _disabled, _force] remoteExec ["EJF_fnc_exitedInnerRange", -clientOwner];
+		[_uav, _jammer, _dist, _disabled, _force] remoteExec ["EJF_fnc_exitedInnerRange", -2];
 	};
 
 	call _fnc_removeFromDisabledUavs; // Friendly drones can be disabled in smart mode, so canTarget is not checked.

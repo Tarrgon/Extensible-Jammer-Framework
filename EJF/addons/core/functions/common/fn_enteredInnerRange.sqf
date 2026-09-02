@@ -46,7 +46,7 @@ if (isDedicated) exitWith {
 if (isServer && hasInterface) then {
 	if (!_canTarget) exitWith {};
 	
-	[_uav, _jammer, _dist] remoteExec ["EJF_fnc_enteredInnerRange", -clientOwner];
+	[_uav, _jammer, _dist] remoteExec ["EJF_fnc_enteredInnerRange", -2];
 	call _fnc_disconnectDroneIfPossible;
 };
 

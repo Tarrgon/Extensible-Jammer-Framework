@@ -29,7 +29,7 @@ if (isServer && hasInterface) then {
 	_canTarget = [_jammer, _uav] call EJF_fnc_jammerCanTargetDrone;
 
 	if (_canTarget) then {
-		[_uav, _jammer, _dist] remoteExec ["EJF_fnc_enteredOuterRange", -clientOwner];
+		[_uav, _jammer, _dist] remoteExec ["EJF_fnc_enteredOuterRange", -2];
 
 		if (!_hasCustomAction) then {
 			if (!(_uavNetId in EJF_uavsInOuterRanges)) then {

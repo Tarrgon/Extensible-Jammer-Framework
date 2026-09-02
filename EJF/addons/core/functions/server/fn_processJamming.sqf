@@ -43,7 +43,7 @@ params [["_allUavs", [], [[]]], ["_allEnabledJammers", [], [[]]]];
 
 			// Not sure how this would happen as they are deleted when they only deleted from here when they are removed as a jammer
 			// It shouldn't be possible for a jammer to both be enabled and not be in this hash map. However, this should prevent errors.
-			if (_isNil "_previousDistances" || { _previousDistances isEqualTo -1 }) then {
+			if (isNil "_previousDistances" || { _previousDistances isEqualTo -1 }) then {
 				EJF_jammerHashMap deleteAt _id;
 				EJF_jammerPreviousSides deleteAt _id;
 				continue;
